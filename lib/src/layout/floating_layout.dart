@@ -2,6 +2,7 @@ import 'package:agora_uikit/agora_uikit.dart';
 import 'package:agora_uikit/src/layout/widgets/disabled_video_widget.dart';
 import 'package:agora_uikit/src/layout/widgets/host_controls.dart';
 import 'package:agora_uikit/src/layout/widgets/number_of_users.dart';
+import 'package:agora_uikit/src/layout/widgets/record_icon.dart';
 import 'package:agora_uikit/src/layout/widgets/user_av_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
@@ -37,6 +38,8 @@ class FloatingLayout extends StatefulWidget {
   /// Render mode for local and remote video
   final VideoRenderMode? videoRenderMode;
 
+  final bool? showRecordIcon;
+
   const FloatingLayout({
     Key? key,
     required this.client,
@@ -49,6 +52,7 @@ class FloatingLayout extends StatefulWidget {
     this.enableHostControl = false,
     this.showNumberOfUsers,
     this.videoRenderMode,
+    this.showRecordIcon,
   }) : super(key: key);
 
   @override
@@ -516,18 +520,58 @@ class _FloatingLayoutState extends State<FloatingLayout> {
           child: Stack(
             children: [
               _viewFloat(),
-              widget.showNumberOfUsers == null ||
-                      widget.showNumberOfUsers == false
+              widget.showNumberOfUsers == null &&
+                          widget.showRecordIcon == null ||
+                      widget.showNumberOfUsers == false &&
+                          widget.showRecordIcon == false
                   ? Container()
-                  : Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: NumberOfUsers(
-                          userCount: widget
-                              .client.sessionController.value.users.length,
-                        ),
-                      ),
-                    ),
+                  : widget.showNumberOfUsers == false &&
+                          widget.showRecordIcon == true
+                      ? Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: widget
+                                    .client.sessionController.value.isRecording
+                                ? RecordIcon()
+                                : Container(),
+                          ),
+                        )
+                      : widget.showNumberOfUsers == true &&
+                              widget.showRecordIcon == false
+                          ? Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: NumberOfUsers(
+                                  userCount: widget.client.sessionController
+                                      .value.viewerCount,
+                                ),
+                              ),
+                            )
+                          : Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    widget.client.sessionController.value
+                                            .isRecording
+                                        ? RecordIcon()
+                                        : Container(),
+                                    widget.client.sessionController.value
+                                            .isRecording
+                                        ? SizedBox(
+                                            width: 5,
+                                          )
+                                        : SizedBox.shrink(),
+                                    NumberOfUsers(
+                                      userCount: widget.client.sessionController
+                                          .value.viewerCount,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.bottomCenter,

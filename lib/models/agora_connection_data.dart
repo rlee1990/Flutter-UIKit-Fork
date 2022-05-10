@@ -27,6 +27,18 @@ class AgoraConnectionData {
   /// (Optional) RTM Token value generated from the Agora dashboard.
   final String? tempRtmToken;
 
+  /// (Optional) Link to start cloud recording
+  final String? recordUrl;
+
+  /// (Optional) Link to stop cloud recording
+  final String? stopRecordUrl;
+
+  /// (Optional) Link to get cloud recording resource id
+  final String? getResourceIdUrl;
+
+  /// Cloud Recorder UID Should not be the same as anyone joining the channel
+  final int recUid;
+
   /// (Optional) The region for connection. This advanced feature applies to scenarios that have regional restrictions.
   final List<AreaCode> areaCode;
 
@@ -35,11 +47,15 @@ class AgoraConnectionData {
     required this.channelName,
     this.rtmChannelName,
     this.uid = 0,
+    this.recUid = 1,
     this.rtmUid,
     this.username,
     this.tokenUrl,
     this.tempToken,
     this.tempRtmToken,
+    this.recordUrl,
+    this.stopRecordUrl,
+    this.getResourceIdUrl,
     this.areaCode = const [AreaCode.GLOB],
   });
 
@@ -53,6 +69,10 @@ class AgoraConnectionData {
     String? tempToken,
     String? tempRtmToken,
     String? tokenUrl,
+    int? recUid,
+    String? recordUrl,
+    String? stopRecordUrl,
+    String? getResourceIdUrl,
     List<AreaCode>? areaCode,
   }) {
     return AgoraConnectionData(
@@ -66,6 +86,10 @@ class AgoraConnectionData {
       tempRtmToken: tempRtmToken ?? this.tempRtmToken,
       tokenUrl: tokenUrl ?? this.tokenUrl,
       areaCode: areaCode ?? this.areaCode,
+      recordUrl: recordUrl ?? this.recordUrl,
+      stopRecordUrl: stopRecordUrl ?? this.stopRecordUrl,
+      getResourceIdUrl: getResourceIdUrl ?? this.getResourceIdUrl,
+      recUid: recUid ?? this.recUid,
     );
   }
 }

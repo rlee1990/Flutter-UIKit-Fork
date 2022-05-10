@@ -37,6 +37,8 @@ class AgoraVideoViewer extends StatefulWidget {
   /// Render mode for local and remote video
   final VideoRenderMode videoRenderMode;
 
+  final bool showRecordIcon;
+
   const AgoraVideoViewer({
     Key? key,
     required this.client,
@@ -50,6 +52,7 @@ class AgoraVideoViewer extends StatefulWidget {
     this.enableHostControls = false,
     this.showNumberOfUsers = false,
     this.videoRenderMode = VideoRenderMode.Fit,
+    this.showRecordIcon = false,
   }) : super(key: key);
 
   @override
@@ -90,12 +93,14 @@ class _AgoraVideoViewerState extends State<AgoraVideoViewer> {
               enableHostControl: widget.enableHostControls,
               showNumberOfUsers: widget.showNumberOfUsers,
               videoRenderMode: widget.videoRenderMode,
+              showRecordIcon: widget.showRecordIcon,
             )
           : GridLayout(
               client: widget.client,
               showNumberOfUsers: widget.showNumberOfUsers,
               disabledVideoWidget: widget.disabledVideoWidget,
               videoRenderMode: widget.videoRenderMode,
+              showRecordIcon: widget.showRecordIcon,
             ),
       onTap: () {
         widget.client.sessionController.toggleVisible();

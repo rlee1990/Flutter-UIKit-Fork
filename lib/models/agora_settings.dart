@@ -20,6 +20,12 @@ class AgoraSettings {
   String? generatedToken;
   String? generatedRtmToken;
   String? generatedRtmId;
+  String? cloudRecordToken;
+  ChannelProfile? channelProfile;
+  final bool isRecording;
+  String? rid;
+  String? sid;
+  String? mode;
   final bool isLoggedIn;
   final bool isInChannel;
   final bool isActiveSpeakerDisabled;
@@ -32,6 +38,7 @@ class AgoraSettings {
   final Map<String, dynamic>? userdata;
   final Map<String, Map<String, dynamic>>? userRtmMap;
   final Map<int, String>? uidToUserIdMap;
+  final int viewerCount;
 
   AgoraSettings({
     this.engine,
@@ -45,6 +52,9 @@ class AgoraSettings {
     required this.visible,
     required this.clientRole,
     required this.localUid,
+    this.rid,
+    this.sid,
+    this.mode = 'mix',
     this.generatedToken,
     this.generatedRtmToken,
     this.generatedRtmId,
@@ -60,6 +70,10 @@ class AgoraSettings {
     this.userdata,
     this.userRtmMap,
     this.uidToUserIdMap,
+    this.isRecording = false,
+    this.cloudRecordToken,
+    this.channelProfile,
+    this.viewerCount = 0,
   });
 
   AgoraSettings copyWith({
@@ -89,6 +103,13 @@ class AgoraSettings {
     Map<String, dynamic>? userdata,
     Map<String, Map<String, dynamic>>? userRtmMap,
     Map<int, String>? uidToUserIdMap,
+    String? rid,
+    String? sid,
+    String? mode,
+    bool? isRecording,
+    String? cloudRecordToken,
+    ChannelProfile? channelProfile,
+    int? viewerCount,
   }) {
     return AgoraSettings(
       engine: engine ?? this.engine,
@@ -118,6 +139,13 @@ class AgoraSettings {
       userdata: userdata ?? this.userdata,
       userRtmMap: userRtmMap ?? this.userRtmMap,
       uidToUserIdMap: uidToUserIdMap ?? this.uidToUserIdMap,
+      rid: rid ?? this.rid,
+      sid: sid ?? this.sid,
+      mode: mode ?? this.mode,
+      cloudRecordToken: cloudRecordToken ?? this.cloudRecordToken,
+      isRecording: isRecording ?? this.isRecording,
+      channelProfile: channelProfile ?? this.channelProfile,
+      viewerCount: viewerCount ?? this.viewerCount,
     );
   }
 }
