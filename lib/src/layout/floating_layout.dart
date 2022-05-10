@@ -62,7 +62,7 @@ class FloatingLayout extends StatefulWidget {
 class _FloatingLayoutState extends State<FloatingLayout> {
   Widget _getLocalViews() {
     return rtc_local_view.SurfaceView(
-      renderMode: widget.videoRenderMode,
+      renderMode: widget.videoRenderMode!,
     );
   }
 
@@ -71,7 +71,7 @@ class _FloatingLayoutState extends State<FloatingLayout> {
       channelId:
           widget.client.sessionController.value.connectionData!.channelName,
       uid: uid,
-      renderMode: widget.videoRenderMode,
+      renderMode: widget.videoRenderMode!,
     );
   }
 

@@ -46,7 +46,7 @@ class _GridLayoutState extends State<GridLayout> {
         : list.add(
             rtc_local_view.SurfaceView(
               zOrderMediaOverlay: true,
-              renderMode: widget.videoRenderMode,
+              renderMode: widget.videoRenderMode!,
             ),
           );
 
@@ -62,7 +62,7 @@ class _GridLayoutState extends State<GridLayout> {
                 channelId: widget
                     .client.sessionController.value.connectionData!.channelName,
                 uid: user.uid,
-                renderMode: widget.videoRenderMode,
+                renderMode: widget.videoRenderMode!,
               ),
             );
     }
