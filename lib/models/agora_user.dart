@@ -7,6 +7,8 @@ class AgoraUser {
   final bool muted;
   final bool videoDisabled;
   final ClientRole clientRole;
+  final String name;
+  final String url;
 
   AgoraUser({
     required this.uid,
@@ -14,6 +16,8 @@ class AgoraUser {
     this.muted = false,
     this.videoDisabled = false,
     this.clientRole = ClientRole.Broadcaster,
+    this.name = '',
+    this.url = '',
   });
 
   AgoraUser copyWith({
@@ -22,6 +26,8 @@ class AgoraUser {
     bool? muted,
     bool? videoDisabled,
     ClientRole? clientRole,
+    String? url,
+    String? name,
   }) {
     return AgoraUser(
       uid: uid ?? this.uid,
@@ -29,6 +35,8 @@ class AgoraUser {
       muted: muted ?? this.muted,
       videoDisabled: videoDisabled ?? this.videoDisabled,
       clientRole: clientRole ?? this.clientRole,
+      name: name ?? this.name,
+      url: url ?? this.url,
     );
   }
 }

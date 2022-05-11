@@ -1106,10 +1106,13 @@ class SessionController extends ValueNotifier<AgoraSettings> {
         value = value.copyWith(lobbyUsers: [
           ...value.lobbyUsers!,
           AgoraUser(
-              uid: rtcId!,
-              muted: true,
-              videoDisabled: true,
-              clientRole: ClientRole.Audience)
+            uid: rtcId!,
+            muted: true,
+            videoDisabled: true,
+            url: url!,
+            name: name!,
+            clientRole: ClientRole.Audience,
+          )
         ]);
         break;
       default:
