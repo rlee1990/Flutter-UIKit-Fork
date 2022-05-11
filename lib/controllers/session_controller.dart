@@ -806,7 +806,14 @@ class SessionController extends ValueNotifier<AgoraSettings> {
           (AgoraRtmMessage message, AgoraRtmMember member) {
         print('Channel msg : ${message.text}, from : ${member.userId}');
         Message msg = Message(text: message.text);
-        _onMessageReceived(messageType: "UserData", message: msg.toJson());
+        String? messageType;
+        msg.toJson().forEach((key, val) {
+          if (key == "text") {
+            var json = jsonDecode(val);
+            messageType = json['messageType'];
+          }
+        });
+        _onMessageReceived(messageType: messageType!, message: msg.toJson());
       };
 
       channel.onMemberJoined = (AgoraRtmMember member) {
@@ -947,6 +954,29 @@ class SessionController extends ValueNotifier<AgoraSettings> {
     });
   }
 
+  void requestToJoin(
+      {required int index, required String name, required String url}) {
+    String? peerId;
+    String json = '''{
+      "messageType": "Join",
+      "rtcId": ${value.users[index].uid},
+      "url": $url,
+      "name": $name,
+      "isForceFul": "false"
+    }''';
+
+    Message message = Message(text: json);
+    AgoraRtmMessage msg = AgoraRtmMessage.fromJson(message.toJson());
+    value.uidToUserIdMap!.forEach((key, val) {
+      if (key == value.users[index].uid) {
+        peerId = val;
+        value.agoraRtmChannel?.sendMessage(msg);
+      } else {
+        print("Peer RTM ID not found");
+      }
+    });
+  }
+
   void _addToUidUserMap({required int rtcId, required String rtmId}) {
     Map<int, String> tempMap = {};
     tempMap.addAll(value.uidToUserIdMap ?? {});
@@ -984,6 +1014,15 @@ class SessionController extends ValueNotifier<AgoraSettings> {
       }
     }
     value = value.copyWith(userRtmMap: tempMap);
+  }
+
+  void changeClientRole({required int uid}) {
+    List<AgoraUser> tempList = value.users;
+    int indexOfUser = tempList.indexWhere((element) => element.uid == uid);
+    if (indexOfUser == -1) return; //this means user is no longer in the call
+    tempList[indexOfUser] =
+        tempList[indexOfUser].copyWith(clientRole: ClientRole.Broadcaster);
+    value = value.copyWith(users: tempList);
   }
 
   void _onMessageReceived(
@@ -1050,6 +1089,28 @@ class SessionController extends ValueNotifier<AgoraSettings> {
             showCameraMessage: false,
           );
         });
+        break;
+      case "Join":
+        int? rtcId;
+        String? url;
+        String? name;
+        message.forEach((key, val) {
+          if (key == "text") {
+            var json = jsonDecode(val);
+            rtcId = json['rtcId'];
+            url = json['url'];
+            name = json['name'];
+            print("RTC ID: $rtcId");
+          }
+        });
+        value = value.copyWith(lobbyUsers: [
+          ...value.lobbyUsers!,
+          AgoraUser(
+              uid: rtcId!,
+              muted: true,
+              videoDisabled: true,
+              clientRole: ClientRole.Audience)
+        ]);
         break;
       default:
     }

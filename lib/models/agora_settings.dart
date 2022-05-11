@@ -11,6 +11,7 @@ class AgoraSettings {
   final AgoraRtmClient? agoraRtmClient;
   final AgoraConnectionData? connectionData;
   final List<AgoraUser> users;
+  final List<AgoraUser>? lobbyUsers;
   final AgoraUser mainAgoraUser;
   final bool isLocalUserMuted;
   final bool isLocalVideoDisabled;
@@ -39,6 +40,7 @@ class AgoraSettings {
   final Map<String, Map<String, dynamic>>? userRtmMap;
   final Map<int, String>? uidToUserIdMap;
   final int viewerCount;
+  final bool isHost;
 
   AgoraSettings({
     this.engine,
@@ -74,6 +76,8 @@ class AgoraSettings {
     this.cloudRecordToken,
     this.channelProfile,
     this.viewerCount = 0,
+    this.lobbyUsers,
+    this.isHost = false,
   });
 
   AgoraSettings copyWith({
@@ -82,6 +86,7 @@ class AgoraSettings {
     AgoraRtmClient? agoraRtmClient,
     AgoraConnectionData? connectionData,
     List<AgoraUser>? users,
+    List<AgoraUser>? lobbyUsers,
     AgoraUser? mainAgoraUser,
     bool? isLocalUserMuted,
     bool? isLocalVideoDisabled,
@@ -110,6 +115,7 @@ class AgoraSettings {
     String? cloudRecordToken,
     ChannelProfile? channelProfile,
     int? viewerCount,
+    bool? isHost,
   }) {
     return AgoraSettings(
       engine: engine ?? this.engine,
@@ -146,6 +152,8 @@ class AgoraSettings {
       isRecording: isRecording ?? this.isRecording,
       channelProfile: channelProfile ?? this.channelProfile,
       viewerCount: viewerCount ?? this.viewerCount,
+      lobbyUsers: lobbyUsers ?? this.lobbyUsers,
+      isHost: isHost ?? this.isHost,
     );
   }
 }
