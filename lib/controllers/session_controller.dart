@@ -1018,11 +1018,15 @@ class SessionController extends ValueNotifier<AgoraSettings> {
 
   void changeClientRole({required int uid}) {
     List<AgoraUser> tempList = value.users;
+    List<AgoraUser> tempLobby = value.lobbyUsers!;
     int indexOfUser = tempList.indexWhere((element) => element.uid == uid);
+    final temp = tempLobby.singleWhere((element) => element.uid == uid);
     if (indexOfUser == -1) return; //this means user is no longer in the call
     tempList[indexOfUser] =
         tempList[indexOfUser].copyWith(clientRole: ClientRole.Broadcaster);
-    value = value.copyWith(users: tempList);
+    tempLobby.remove(temp);
+
+    value = value.copyWith(users: tempList, lobbyUsers: tempLobby);
   }
 
   void _onMessageReceived(
