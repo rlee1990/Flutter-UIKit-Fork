@@ -1029,6 +1029,14 @@ class SessionController extends ValueNotifier<AgoraSettings> {
     value = value.copyWith(users: tempList, lobbyUsers: tempLobby);
   }
 
+  void removeFromLobby({required int uid}) {
+    List<AgoraUser> tempLobby = value.lobbyUsers!;
+    final temp = tempLobby.singleWhere((element) => element.uid == uid);
+    tempLobby.remove(temp);
+
+    value = value.copyWith(lobbyUsers: tempLobby);
+  }
+
   void _onMessageReceived(
       {required String messageType, required Map<String, dynamic> message}) {
     switch (messageType) {
