@@ -24,6 +24,7 @@ class SessionController extends ValueNotifier<AgoraSettings> {
             agoraRtmChannel: null,
             agoraRtmClient: null,
             users: [],
+            lobbyUsers: [],
             mainAgoraUser: AgoraUser(
               uid: 0,
               remote: true,
@@ -1018,7 +1019,7 @@ class SessionController extends ValueNotifier<AgoraSettings> {
 
   void changeClientRole({required int uid}) {
     List<AgoraUser> tempList = value.users;
-    List<AgoraUser> tempLobby = value.lobbyUsers!;
+    List<AgoraUser> tempLobby = value.lobbyUsers;
     int indexOfUser = tempList.indexWhere((element) => element.uid == uid);
     final temp = tempLobby.singleWhere((element) => element.uid == uid);
     if (indexOfUser == -1) return; //this means user is no longer in the call
@@ -1030,7 +1031,7 @@ class SessionController extends ValueNotifier<AgoraSettings> {
   }
 
   void removeFromLobby({required int uid}) {
-    List<AgoraUser> tempLobby = value.lobbyUsers!;
+    List<AgoraUser> tempLobby = value.lobbyUsers;
     final temp = tempLobby.singleWhere((element) => element.uid == uid);
     tempLobby.remove(temp);
 
@@ -1116,7 +1117,7 @@ class SessionController extends ValueNotifier<AgoraSettings> {
           }
         });
         value = value.copyWith(lobbyUsers: [
-          ...value.lobbyUsers!,
+          ...value.lobbyUsers,
           AgoraUser(
             uid: rtcId!,
             muted: true,

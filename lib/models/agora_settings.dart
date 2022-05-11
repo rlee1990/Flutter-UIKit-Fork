@@ -11,7 +11,7 @@ class AgoraSettings {
   final AgoraRtmClient? agoraRtmClient;
   final AgoraConnectionData? connectionData;
   final List<AgoraUser> users;
-  final List<AgoraUser>? lobbyUsers;
+  final List<AgoraUser> lobbyUsers;
   final AgoraUser mainAgoraUser;
   final bool isLocalUserMuted;
   final bool isLocalVideoDisabled;
@@ -76,7 +76,7 @@ class AgoraSettings {
     this.cloudRecordToken,
     this.channelProfile,
     this.viewerCount = 0,
-    this.lobbyUsers,
+    required this.lobbyUsers,
     this.isHost = false,
   });
 
